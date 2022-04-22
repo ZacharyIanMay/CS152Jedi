@@ -9,8 +9,9 @@ class Disjunction(operands: List[Expression]) extends SpecialForm {
     def helper(list: List[Expression]): Boole =
     {
       val head::tail = list
-      if(!head.isInstanceOf[Boole]) throw TypeException("Must be a Boole")
-      if(head.equals(Boole.TRUE)) Boole.TRUE
+      val h = head.execute(env)
+      if(!h.isInstanceOf[Boole]) throw TypeException("Must be a Boole")
+      if(h.equals(Boole.TRUE)) Boole.TRUE
       else
       {
         if(tail.isEmpty) Boole.FALSE
