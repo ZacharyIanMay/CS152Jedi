@@ -10,7 +10,7 @@ import scala.io._
  */
 
 object console {
-  val parsers = new Jedi1Parsers // for now
+  val parsers = new Jedi2Parsers // for now
   val globalEnv = new Environment
   var verbose = true
 

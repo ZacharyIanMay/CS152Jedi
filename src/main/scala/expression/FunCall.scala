@@ -2,10 +2,11 @@ package expression
 import context.Environment
 import context.alu
 import value.Value
+import value.Closure
 
 import scala.::
 
-class FunCall(operator: Identifier, operands: List[Expression]) extends Expression {
+case class FunCall(val operator: Identifier, val operands: List[Expression]) extends Expression {
   def execute(env: Environment) =
   {
     var ops: List[Value] = List()
@@ -13,6 +14,15 @@ class FunCall(operator: Identifier, operands: List[Expression]) extends Expressi
       {
         ops = ops :+ e.execute(env)
       }
-    alu.execute(operator, ops)
+    try
+    {
+      val close = env(operator)
+      if(close.isInstanceOf[Closure])
+        close.asInstanceOf[Closure].apply(ops)
+      else alu.execute(operator, ops)
+    } catch
+    {
+      case e: Exception => alu.execute(operator, ops)
+    }
   }
 }

@@ -34,8 +34,6 @@ case class Exact(value: Int) extends Numeric with Ordered[Value]:
       case x: Inexact => this.value.toDouble.compare(x.value)
       case _ => throw new TypeException("Arguments must be comparable")
 
-  //TODO: *, -, toString
-  //TODO: for boole !x is x.unary_!
   def *(other: Value): Numeric =
     other match
       case x: Exact => Exact(this.value * x.value)
