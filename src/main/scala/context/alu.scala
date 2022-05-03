@@ -18,6 +18,8 @@ object alu:
       case "unequals" => unequals(args)  // binary
       case "not" => not(args)            // unary
       case "write" => write(args)
+      case "var" => makeVar(args)
+      case "dereference" => dereference(args)
       case _ => throw TypeException("Invalid Opcode")
   // TBC
 
@@ -104,14 +106,20 @@ object alu:
     println(args(0))
     Notification.DONE
 
+  // variable ops
 
+  // returns the content of args(0)
+  private def dereference(args: List[Value]) =
+    if (args.size != 1) throw new TypeException("1 input required by []")
+    args(0) match
+      case x: Variable => x.content
+      case _ => throw TypeException("Input to [] must be a variable")
 
-
-
+  // creates a new variable cobtaining args(0)
+  private def makeVar(args: List[Value]) =
+    if (args.size != 1) throw new TypeException("1 input required by var")
+    args(0) match
+      case x: Value => Variable(x)
+      case _ => throw TypeException("Input to var must be a value")
 
 // etc.
-
-
-
-
-
